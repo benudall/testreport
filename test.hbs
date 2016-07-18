@@ -1,25 +1,46 @@
+<head>
+	<style>
+	.true{
+		background-color:lightgreen;
+	}
+	.false{
+		background-color:pinkred;
+	}
+	.null{
+		background-color:lightgrey;
+	}
+	a{
+		color:blue;
+	}
+	a:nth-of-type(2){
+		float:right;
+	}
+	</style>
+</head>
 <html>
 	<table border>
 		<tr>
 			<td>
-				name
+				Test Name
 			</td>
 			<td>
-				passing
+				Test Result
 			</td>
 			<td>
-				screenshotComparePassing
+				Screenshot Comparison
 			</td>
 		</tr>
+		{{#each results}}
 		<tr>
 			<td>
-				{{results.0.name}}
+				{{{name}}}
 			</td>
-			<td>
-				{{results.0.passing}}
+			<td class="{{{class}}}">
+				{{{testResult}}}
 			</td>
-			<td>
-				{{results.0.screenshotComparePassing}}
+			<td class="{{{class2}}}">
+				{{{screenshotResult}}}
 			</td>
 		</tr>
+		{{/each}}
 </html>
