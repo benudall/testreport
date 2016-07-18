@@ -41,7 +41,7 @@ https.get('https://api.ghostinspector.com/v1/suites/562f9ad8175db89e368f0233/tes
 					tests.results[x].screenshotResult="Screenshot Disabled";
 				}
 				else{
-					tests.results[x].screenshotResult = "Screenshot is "+Number(d2.data[0].screenshotCompareDifference)*100+"% different to the last successful test<br><a href='"+d2.data[0].screenshot.original.defaultUrl+"'>Screenshot</a> <a href='"+d2.data[0].screenshotCompare.compareOriginal.defaultUrl+"'>Comparison</a>";
+					tests.results[x].screenshotResult = "Screenshot is "+Math.round(Number(d2.data[0].screenshotCompareDifference)*100)+"% different to the last successful test<br><a href='"+d2.data[0].screenshot.original.defaultUrl+"'>Screenshot</a> <a href='"+d2.data[0].screenshotCompare.compareOriginal.defaultUrl+"'>Comparison</a>";
 				}
 
 				
