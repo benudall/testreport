@@ -27,8 +27,11 @@ https.get('https://api.ghostinspector.com/v1/suites/562f9ad8175db89e368f0233/tes
 				}
 				else{
 					for(y=0;y<d2.data[0].steps.length;y++){
-						if(d2.data[0].steps[y].passing==false){
+						if(d2.data[0].steps[y].passing==false && d2.data[0].video){
 							tests.results[x].testResult = "Failed on step "+(Number(y)+1)+" : "+d2.data[0].steps[y].notes+"<br><a href='"+d2.data[0].video.url+"'>Video recording of test</a>";
+						}
+						else if(d2.data[0].steps[y].passing==false){
+							tests.results[x].testResult = "Failed on step "+(Number(y)+1)+" : "+d2.data[0].steps[y].notes+"<br> No video recording of test available</a>";
 						}
 					}
 				}

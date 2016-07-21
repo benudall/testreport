@@ -7,16 +7,22 @@
 	tr:nth-of-type(1){
 		font-weight: bold;
 	}
+	tr.truetrue,tr.truenull{
+		background-color: lightgreen;
+	}
+	tr.falsetrue,tr.truefalse,tr.falsenull,tr.falsefalse{
+		background-color: pink;
+	}
 	td{
 		width: 33%;
 	}
-	.true{
+	td.true{
 		background-color: lightgreen;
 	}
-	.false{
+	td.false{
 		background-color: pink;
 	}
-	.null{
+	td.null{
 		background-color: lightgrey;
 	}
 	a{
@@ -44,14 +50,14 @@
 			</td>
 		</tr>
 		{{#each results}}
-		<tr>
+		<tr class="{{class}}{{class2}}">
 			<td>
 				{{name}}
 			</td>
-			<td class="{{{class}}}">
+			<td class="{{class}}">
 				{{{testResult}}}
 			</td>
-			<td class="{{{class2}}}">
+			<td class="{{class2}}">
 				{{{screenshotResult}}}
 			</td>
 		</tr>
