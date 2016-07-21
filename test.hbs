@@ -1,24 +1,37 @@
 <head>
 	<style>
+	table{
+		font-size: 24;
+		width: 100%;
+	}
+	tr:nth-of-type(1){
+		font-weight: bold;
+	}
+	td{
+		width: 33%;
+	}
 	.true{
-		background-color:lightgreen;
+		background-color: lightgreen;
 	}
 	.false{
-		background-color:pink;
+		background-color: pink;
 	}
 	.null{
-		background-color:lightgrey;
+		background-color: lightgrey;
 	}
 	a{
-		color:blue;
+		color: blue;
 	}
 	a:nth-of-type(2){
-		float:right;
+		float: right;
 	}
 	</style>
 </head>
 <html>
-	<table border>
+	<h1>
+		Test report for {{date}}
+	</h1>
+	<table border cellspacing=0>
 		<tr>
 			<td>
 				Test Name
@@ -33,7 +46,7 @@
 		{{#each results}}
 		<tr>
 			<td>
-				{{{name}}}
+				{{name}}
 			</td>
 			<td class="{{{class}}}">
 				{{{testResult}}}
@@ -43,4 +56,5 @@
 			</td>
 		</tr>
 		{{/each}}
+	</table>
 </html>

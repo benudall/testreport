@@ -50,9 +50,11 @@ https.get('https://api.ghostinspector.com/v1/suites/562f9ad8175db89e368f0233/tes
 				if(x==d.data.length-1){
 					var template = fs.readFileSync('test.hbs').toString();
 					var compiled = Handlebars.compile(template);
-					var date = new Date();
-					var date = date.toJSON().replace(/T/g," ").replace(/:/g,"-").replace(/\.\d{3}Z/g,"");
-					fs.writeFileSync("Test Report "+date+".html",compiled(tests));
+					tests.date = new Date();
+					tests.date = tests.date.toJSON().replace(/T/g," ").replace(/:/g,"-").replace(/\.\d{3}Z/g,"");
+					fs.writeFileSync("Test Report "+tests.date+".html",compiled(tests));
+					console.log("Test Report "+tests.date+".html created");
+					console.log("END");
 				};
 			};
 		})
