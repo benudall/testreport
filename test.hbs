@@ -13,9 +13,6 @@
 	tr.falsetrue,tr.truefalse,tr.falsenull,tr.falsefalse{
 		background-color: pink;
 	}
-	td{
-		width: 33%;
-	}
 	td.true{
 		background-color: lightgreen;
 	}
@@ -28,6 +25,9 @@
 	a{
 		color: blue;
 	}
+	td:nth-of-type(2) > a, td:nth-of-type(2) > span{
+		float: right;
+	}
 	a:nth-of-type(2){
 		float: right;
 	}
@@ -35,7 +35,8 @@
 </head>
 <html>
 	<h1>
-		Test report for {{date}}
+		Test report generated at: {{date}}<br>
+		Suite: {{suite}}
 	</h1>
 	<table border cellspacing=0>
 		<tr>
@@ -50,14 +51,14 @@
 			</td>
 		</tr>
 		{{#each results}}
-		<tr class="{{class}}{{class2}}">
+		<tr class="{{class}}{{class2}}" nowrap>
 			<td>
 				{{name}}
 			</td>
-			<td class="{{class}}">
+			<td class="{{class}}" style=w"idth:100%">
 				{{{testResult}}}
 			</td>
-			<td class="{{class2}}">
+			<td class="{{class2}}" nowrap>
 				{{{screenshotResult}}}
 			</td>
 		</tr>

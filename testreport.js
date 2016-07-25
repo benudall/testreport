@@ -28,10 +28,10 @@ https.get('https://api.ghostinspector.com/v1/suites/562f9ad8175db89e368f0233/tes
 				else{
 					for(y=0;y<d2.data[0].steps.length;y++){
 						if(d2.data[0].steps[y].passing==false && d2.data[0].video){
-							tests.results[x].testResult = "Failed on step "+(Number(y)+1)+" : "+d2.data[0].steps[y].notes+"<br><a href='"+d2.data[0].video.url+"'>Video recording of test</a>";
+							tests.results[x].testResult = "<strong>Step "+(Number(y)+1)+" failed:</strong><a href='"+d2.data[0].video.url+"'>Video recording of test</a><br>"+d2.data[0].steps[y].notes;
 						}
 						else if(d2.data[0].steps[y].passing==false){
-							tests.results[x].testResult = "Failed on step "+(Number(y)+1)+" : "+d2.data[0].steps[y].notes+"<br> No video recording of test available</a>";
+							tests.results[x].testResult = "<strong>Step "+(Number(y)+1)+" failed:</strong><span>No video recording of test available</span><br>"+d2.data[0].steps[y].notes;
 						}
 					}
 				}
@@ -44,7 +44,7 @@ https.get('https://api.ghostinspector.com/v1/suites/562f9ad8175db89e368f0233/tes
 					tests.results[x].screenshotResult="Screenshot Disabled";
 				}
 				else{
-					tests.results[x].screenshotResult = "Screenshot is "+Math.round(Number(d2.data[0].screenshotCompareDifference)*100)+"% different to the last successful test<br><a href='"+d2.data[0].screenshot.original.defaultUrl+"'>Screenshot</a> <a href='"+d2.data[0].screenshotCompare.compareOriginal.defaultUrl+"'>Comparison</a>";
+					tests.results[x].screenshotResult = "Screenshot is "+Math.round(Number(d2.data[0].screenshotCompareDifference)*100)+"% different to baseline<br><a href='"+d2.data[0].screenshot.original.defaultUrl+"'>Screenshot</a> <a href='"+d2.data[0].screenshotCompare.compareOriginal.defaultUrl+"'>Comparison</a>";
 				}
 
 				
@@ -53,6 +53,7 @@ https.get('https://api.ghostinspector.com/v1/suites/562f9ad8175db89e368f0233/tes
 				if(x==d.data.length-1){
 					var template = fs.readFileSync('test.hbs').toString();
 					var compiled = Handlebars.compile(template);
+					tests.suite = d.data[0].suite.name;
 					tests.date = new Date();
 					tests.date = tests.date.toJSON().replace(/T/g," ").replace(/:/g,"-").replace(/\.\d{3}Z/g,"");
 					fs.writeFileSync("Test Report "+tests.date+".html",compiled(tests));
