@@ -59,18 +59,18 @@
 		<tr>
 			<td>
 				Test Name
-				<span>{{count}}</span>
+				<span title="Total">{{count}}</span>
 			</td>
 			<td>
 				Test Result
-				<span class=red>{{fails}}</span>
-				<span class=green>{{passes}}</span>
+				<span class=red title="Failed">{{fails}}</span>
+				<span class=green title="Passed">{{passes}}</span>
 			</td>
 			<td>
 				Screenshot Comparison
-				<span class=red>{{screenshotfails}}</span>
-				<span class=grey>{{screenshotnulls}}</span>
-				<span class=green>{{screenshotpasses}}</span>
+				<span class=red title="Failed">{{screenshotfails}}</span>
+				<span class=grey title="Disabled">{{screenshotnulls}}</span>
+				<span class=green title="Passed">{{screenshotpasses}}</span>
 			</td>
 		</tr>
 		{{#each results}}
