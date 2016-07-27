@@ -7,10 +7,26 @@
 	tr:nth-of-type(1){
 		font-weight: bold;
 	}
-	tr.truetrue,tr.truenull{
+	span{
+		float: right;
+		padding: 0 10;
+	}
+	span.green{
+		color: green;
+	}
+	span.red{
+		color: red;
+	}
+	span.grey{
+		color: grey;
+	}
+	td{
+		width: 33%;
+	}
+	td.truetrue,td.truenull{
 		background-color: lightgreen;
 	}
-	tr.falsetrue,tr.truefalse,tr.falsenull,tr.falsefalse{
+	td.falsetrue,td.truefalse,td.falsenull,td.falsefalse{
 		background-color: pink;
 	}
 	td.true{
@@ -36,29 +52,37 @@
 <html>
 	<h1>
 		Test report generated at: {{date}}<br>
-		Suite: {{suite}}
+		Suite: {{suite}}<br>
+		Suite last ran at: {{earliest}}
 	</h1>
 	<table border cellspacing=0>
 		<tr>
 			<td>
 				Test Name
+				<span>{{count}}</span>
 			</td>
 			<td>
 				Test Result
+				<span class=red>{{fails}}</span>
+				<span class=green>{{passes}}</span>
 			</td>
 			<td>
 				Screenshot Comparison
+				<span class=red>{{screenshotfails}}</span>
+				<span class=grey>{{screenshotnulls}}</span>
+				<span class=green>{{screenshotpasses}}</span>
 			</td>
 		</tr>
 		{{#each results}}
-		<tr class="{{class}}{{class2}}" nowrap>
-			<td>
-				{{name}}
+		<tr>
+			<td class="{{class}}{{class2}}">
+				<strong>{{name}}</strong><br>
+				{{details}}
 			</td>
-			<td class="{{class}}" style=w"idth:100%">
+			<td class="{{class}}">
 				{{{testResult}}}
 			</td>
-			<td class="{{class2}}" nowrap>
+			<td class="{{class2}}">
 				{{{screenshotResult}}}
 			</td>
 		</tr>
