@@ -67,13 +67,44 @@ https.get('https://api.ghostinspector.com/v1/suites/562f9ad8175db89e368f0233/tes
 					var compiled = Handlebars.compile(template);
 					tests.suite = d.data[0].suite.name;
 					tests.date = new Date();
+					
+					tests.totalpasses=0;
+					tests.totalfails=0;
+					for(test=0;test<d.data.length;test++){
+						if(d.data[test].passing==true && d.data[test].screenshotComparePassing==true){
+							tests.totalpasses++;
+						}
+						if(d.data[test].passing==false || d.data[test].screenshotComparePassing==false){
+							tests.totalfails++;
+						}
+					}
+					
 					tests.count=tests.passes+tests.fails;
 					
+					//pie charts
+					tp = tests.totalpasses/tests.count;
+					tf = tests.totalfails/tests.count;
+					
+					x=50+50*Math.sin(2*Math.PI*tp);
+					y=50-50*Math.cos(2*Math.PI*tp);
+					if(tp>0.5){z=1}
+					else{z=0}
+
+					x2=50+50*Math.sin(2*Math.PI*(tp+tf));
+					y2=50-50*Math.cos(2*Math.PI*(tp+tf));
+					if(tf>0.5){z2=1}
+					else{z2=0}
+
+					tests.pietp="M 50 0 A 50 50 0 "+z+" 1 "+x+" "+y+" L 50 50 Z";
+					tests.pietf="M "+x+" "+y+" A 50 50 0 "+z2+" 1 "+x2+" "+y2+" L 50 50 Z";
+					
+					//test last ran
 					earliest = tests.dates.reduce(function (pre, cur){
 						return Date.parse(pre) > Date.parse(cur) ? cur : pre;
 					});
 					earliest = new Date(earliest);
 					tests.earliest=earliest.toJSON().replace(/T/g," ").replace(/:/g,"-").replace(/\.\d{3}Z/g,"");
+					//timestamp for report
 					tests.date = tests.date.toJSON().replace(/T/g," ").replace(/:/g,"-").replace(/\.\d{3}Z/g,"");
 					fs.writeFileSync("Test Report "+tests.date+".html",compiled(tests));
 					console.log("Test Report "+tests.date+".html created");

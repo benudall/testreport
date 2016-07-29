@@ -20,6 +20,12 @@
 	span.grey{
 		color: grey;
 	}
+	svg{
+		height: 100px;
+		width: 100px;
+		float: right;
+		font-size: 20;
+	}
 	td{
 		width: 33%;
 	}
@@ -59,7 +65,13 @@
 		<tr>
 			<td>
 				Test Name
-				<span title="Total">{{count}}</span>
+				<svg>
+					<path stroke="none" fill="green" d="{{pietp}}" />
+					<path stroke="none" fill="red" d="{{pietf}}" />
+					<circle cx=50 cy=50 r=25 fill=white />
+					<text x="50" y="47" fill="green" text-anchor="middle">{{passes}}</text>
+					<text x="50" y="63" fill="red" text-anchor="middle"">{{fails}}</text>
+				</svg>
 			</td>
 			<td>
 				Test Result
