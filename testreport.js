@@ -71,16 +71,12 @@ https.get('https://api.ghostinspector.com/v1/suites/562f9ad8175db89e368f0233/tes
 					tests.totalpasses=0;
 					tests.totalfails=0;
 					for(test=0;test<d.data.length;test++){
-						if(d.data[test].passing==true && d.data[test].screenshotComparePassing==true){
-							tests.totalpasses++;
-						}
 						if(d.data[test].passing==false || d.data[test].screenshotComparePassing==false){
 							tests.totalfails++;
 						}
 					}
-					
 					tests.count=tests.passes+tests.fails;
-					
+					tests.totalpasses=tests.count-tests.totalfails;
 					//pie charts
 					tp = tests.totalpasses/tests.count;
 					tf = tests.totalfails/tests.count;
