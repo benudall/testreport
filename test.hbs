@@ -53,7 +53,17 @@
 	a:nth-of-type(2){
 		float: right;
 	}
+	div{
+		max-height: 0;
+		overflow: hidden;
+		transition: max-height 0.5s;
+	}
+	div.after
 	</style>
+	<script>
+	function expand();
+	
+	</script>
 </head>
 <html>
 	<h1>
@@ -93,6 +103,9 @@
 			</td>
 			<td class="{{class}}">
 				{{{testResult}}}
+				<div>
+					{{steps}}
+				</div>
 			</td>
 			<td class="{{class2}}">
 				{{{screenshotResult}}}
