@@ -22,35 +22,42 @@
 	}
 	svg{
 		height: 100px;
+		width: 98%;
+		margin: 1%;
+	}
+	tr:first-child svg{
+		height: 100px;
 		width: 100px;
 		float: right;
 		font-size: 20;
 	}
+	tr:first-child {
+		vertical-align: top;
+	}
 	td{
 		width: 33%;
 	}
-	td.truetrue,td.truenull{
+	.truetrue,.truenull{
 		background-color: lightgreen;
 	}
-	td.falsetrue,td.truefalse,td.falsenull,td.falsefalse{
+	.falsetrue,.truefalse,.falsenull,.falsefalse{
 		background-color: pink;
 	}
-	td.true{
+	.true{
 		background-color: lightgreen;
+		fill: lightgreen;
 	}
-	td.false{
+	.false{
 		background-color: pink;
+		fill: pink;
 	}
-	td.null{
+	.null{
 		background-color: lightgrey;
 	}
 	a{
 		color: blue;
 	}
-	td:nth-of-type(2) > a, td:nth-of-type(2) > span{
-		float: right;
-	}
-	a:nth-of-type(2){
+	tr:first-child span, td:nth-of-type(2) a, td:nth-of-type(3) > a:nth-of-type(2){
 		float: right;
 	}
 	div{
@@ -58,12 +65,10 @@
 		overflow: hidden;
 		transition: max-height 0.5s;
 	}
-	div.after
+	details{
+		background: white;
+	}
 	</style>
-	<script>
-	function expand();
-	
-	</script>
 </head>
 <html>
 	<h1>
@@ -71,7 +76,7 @@
 		Suite: {{suite}}<br>
 		Suite last ran at: {{earliest}}
 	</h1>
-	<table border cellspacing=0>
+	<table border cellspacing=0 cellpadding=0>
 		<tr>
 			<td>
 				Test Name
@@ -98,14 +103,33 @@
 		{{#each results}}
 		<tr>
 			<td class="{{class}}{{class2}}">
-				<strong>{{name}}</strong><br>
-				{{details}}
+				<details>
+					<summary class="{{class}}{{class2}}">
+						<strong>{{name}}</strong><br>
+						{{details}}
+					</summary>
+						<svg viewbox="0 0 500 {{svgmax}}" preserveAspectRatio="none">
+							<rect width="50" height="100%" class="{{history.0.result}}"></rect>
+							<rect width="50" height="100%" class="{{history.1.result}}" x=50></rect>
+							<rect width="50" height="100%" class="{{history.2.result}}" x=100></rect>
+							<rect width="50" height="100%" class="{{history.3.result}}" x=150></rect>
+							<rect width="50" height="100%" class="{{history.4.result}}" x=200></rect>
+							<rect width="50" height="100%" class="{{history.5.result}}" x=250></rect>
+							<rect width="50" height="100%" class="{{history.6.result}}" x=300></rect>
+							<rect width="50" height="100%" class="{{history.7.result}}" x=350></rect>
+							<rect width="50" height="100%" class="{{history.8.result}}" x=400></rect>
+							<rect width="50" height="100%" class="{{history.9.result}}" x=450></rect>
+							<path d="M 25 {{svgc.0.c}} L 75 {{svgc.1.c}} L 125 {{svgc.2.c}} L 175 {{svgc.3.c}} L 225 {{svgc.4.c}} L 275 {{svgc.5.c}} L 325 {{svgc.6.c}} L 375 {{svgc.7.c}} L 425 {{svgc.8.c}} L 475 {{svgc.9.c}}" fill=none stroke=black ></path>
+						</svg>
+				</details>
 			</td>
 			<td class="{{class}}">
-				{{{testResult}}}
-				<div>
-					{{steps}}
-				</div>
+				<details>
+					<summary class="{{class}}">{{{testResult}}}</summary>
+					{{#each steps}}
+					{{{notes}}}<br>
+					{{/each}}
+				</details>
 			</td>
 			<td class="{{class2}}">
 				{{{screenshotResult}}}

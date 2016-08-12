@@ -29,6 +29,7 @@ https.get('https://api.ghostinspector.com/v1/suites/562f9ad8175db89e368f0233/tes
 				tests.results[x].details=d.data[x].details;
 				tests.dates[x]=d.data[x].dateExecutionFinished;
 				tests.results[x].class=d2.data[0].passing;
+				tests.results[x].steps=[];
 				if(d2.data[0].passing==true){
 					tests.results[x].testResult="Test Passed";
 					tests.passes++;
@@ -43,7 +44,12 @@ https.get('https://api.ghostinspector.com/v1/suites/562f9ad8175db89e368f0233/tes
 							tests.results[x].testResult = "<strong>Step "+(Number(y)+1)+" failed:</strong><span>No video recording of test available</span><br>"+d2.data[0].steps[y].notes;
 							tests.fails++;
 						}
+						
 					}
+				}
+				for(y=0;y<d2.data[0].steps.length;y++){
+					tests.results[x].steps[y]=[];
+					tests.results[x].steps[y].notes="<strong class='"+d2.data[0].steps[y].passing+"'>Step "+(y+1)+":</strong><br>"+d2.data[0].steps[y].notes;
 				}
 				tests.results[x].class2=d2.data[0].screenshotComparePassing;
 				if(d2.data[0].screenshotComparePassing==true){
@@ -56,11 +62,30 @@ https.get('https://api.ghostinspector.com/v1/suites/562f9ad8175db89e368f0233/tes
 					tests.screenshotnulls++;
 				}
 				else{
-					tests.results[x].screenshotResult = "Screenshot is "+Math.round(Number(d2.data[0].screenshotCompareDifference)*100)+"% different to baseline<br><a href='"+d2.data[0].screenshot.original.defaultUrl+"'>Screenshot</a> <a href='"+d2.data[0].screenshotCompare.compareOriginal.defaultUrl+"'>Comparison</a>";
+					tests.results[x].screenshotResult = "Screenshot is "+Math.round(Number(d2.data[0].screenshotCompareDifference)*100)+"% different to baseline<br><a href='"+d2.data[0].screenshot.original.defaultUrl+"'>Screenshot</a><a href='"+d2.data[0].screenshotCompare.compareOriginal.defaultUrl+"'>Comparison</a>";
 					tests.screenshotfails++;
 				}
-
-				console.log(tests.results[x].name+" -- "+tests.results[x].testResult+" -- "+tests.results[x].screenshotResult);
+				
+				tests.results[x].timeline=[];
+				tests.results[x].history=[];
+				for(r=0;r<d2.data.length;r++){
+					tests.results[x].timeline.push(d2.data[r].executionTime);
+					tests.results[x].history[r]=[];
+					if(d2.data[r].passing==false || d2.data[r].screenshotComparePassing==false){
+						tests.results[x].history[r].result=false;
+					}
+					else{
+						tests.results[x].history[r].result=true;
+					}
+				}
+				tests.results[x].svgmax=Math.max.apply(null,tests.results[x].timeline);
+				tests.results[x].svgc=[];
+				for(t=0;t<tests.results[x].timeline.length;t++){
+					tests.results[x].svgc[t]=[];
+					tests.results[x].svgc[t].c=tests.results[x].svgmax-tests.results[x].timeline[t];
+				}
+				
+				console.log(tests.results[x].name);
 				
 				if(x==d.data.length-1){
 					var template = fs.readFileSync('test.hbs').toString();
@@ -81,18 +106,18 @@ https.get('https://api.ghostinspector.com/v1/suites/562f9ad8175db89e368f0233/tes
 					tp = tests.totalpasses/tests.count;
 					tf = tests.totalfails/tests.count;
 					
-					x=50+50*Math.sin(2*Math.PI*tp);
-					y=50-50*Math.cos(2*Math.PI*tp);
-					if(tp>0.5){z=1}
-					else{z=0}
+					x1=50+50*Math.sin(2*Math.PI*tp);
+					y1=50-50*Math.cos(2*Math.PI*tp);
+					if(tp>0.5){z1=1}
+					else{z1=0}
 
 					x2=50+50*Math.sin(2*Math.PI*(tp+tf));
 					y2=50-50*Math.cos(2*Math.PI*(tp+tf));
 					if(tf>0.5){z2=1}
 					else{z2=0}
 
-					tests.pietp="M 50 0 A 50 50 0 "+z+" 1 "+x+" "+y+" L 50 50 Z";
-					tests.pietf="M "+x+" "+y+" A 50 50 0 "+z2+" 1 "+x2+" "+y2+" L 50 50 Z";
+					tests.pietp="M 50 0 A 50 50 0 "+z1+" 1 "+x1+" "+y1+" L 50 50 Z";
+					tests.pietf="M "+x1+" "+y1+" A 50 50 0 "+z2+" 1 "+x2+" "+y2+" L 50 50 Z";
 					
 					//test last ran
 					earliest = tests.dates.reduce(function (pre, cur){
