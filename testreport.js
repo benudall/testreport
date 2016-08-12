@@ -82,7 +82,7 @@ https.get('https://api.ghostinspector.com/v1/suites/562f9ad8175db89e368f0233/tes
 				tests.results[x].svgc=[];
 				for(t=0;t<tests.results[x].timeline.length;t++){
 					tests.results[x].svgc[t]=[];
-					tests.results[x].svgc[t].c=tests.results[x].svgmax-tests.results[x].timeline[t];
+					tests.results[x].svgc[t].c=100-(100*tests.results[x].timeline[t]/tests.results[x].svgmax);
 				}
 				
 				console.log(tests.results[x].name);
