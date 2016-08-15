@@ -109,6 +109,11 @@
 						{{details}}
 					</summary>
 						<svg viewbox="0 0 500 100" preserveAspectRatio="none">
+							<defs>
+								<marker id="marker" overflow="visible">
+									<circle r="2" cx="0" cy="0" fill="black"></circle>
+								</marker>
+							</defs>
 							<rect width="50" height="100%" class="{{history.9.result}}"></rect>
 							<rect width="50" height="100%" class="{{history.8.result}}" x=50></rect>
 							<rect width="50" height="100%" class="{{history.7.result}}" x=100></rect>
@@ -119,7 +124,7 @@
 							<rect width="50" height="100%" class="{{history.2.result}}" x=350></rect>
 							<rect width="50" height="100%" class="{{history.1.result}}" x=400></rect>
 							<rect width="50" height="100%" class="{{history.0.result}}" x=450></rect>
-							<path d="M 25 {{svgc.9.c}} L 75 {{svgc.8.c}} L 125 {{svgc.7.c}} L 175 {{svgc.6.c}} L 225 {{svgc.5.c}} L 275 {{svgc.4.c}} L 325 {{svgc.3.c}} L 375 {{svgc.2.c}} L 425 {{svgc.1.c}} L 475 {{svgc.0.c}}" fill=none stroke=black ></path>
+							<path d="M 25 {{svgc.9.c}} L 75 {{svgc.8.c}} L 125 {{svgc.7.c}} L 175 {{svgc.6.c}} L 225 {{svgc.5.c}} L 275 {{svgc.4.c}} L 325 {{svgc.3.c}} L 375 {{svgc.2.c}} L 425 {{svgc.1.c}} L 475 {{svgc.0.c}}" fill=none stroke=black  marker-start="url(#marker)" marker-mid="url(#marker)" marker-end="url(#marker)"></path>
 						</svg>
 						Execution times of the last 10 test results.
 				</details>
