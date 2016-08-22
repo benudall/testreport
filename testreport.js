@@ -20,7 +20,7 @@ https.get('https://api.ghostinspector.com/v1/suites/562f9ad8175db89e368f0233/tes
 		tests.screenshotpasses=0;
 		tests.screenshotfails=0;
 		tests.screenshotnulls=0;
-		
+		//for each test
 		for(x=0;x<d.data.length;x++){
 			var res = request('GET','https://api.ghostinspector.com/v1/tests/'+d.data[x]._id+'/results/?apiKey=38300ec7cc2ed88ad805261de8581f47ada94f7b')
 				d2=JSON.parse(res.getBody());
@@ -30,30 +30,39 @@ https.get('https://api.ghostinspector.com/v1/suites/562f9ad8175db89e368f0233/tes
 				tests.dates[x]=d.data[x].dateExecutionFinished;
 				tests.results[x].class=d2.data[0].passing;
 				tests.results[x].steps=[];
+				//if test passed then display
 				if(d2.data[0].passing==true){
 					tests.results[x].testResult="Test Passed";
 					tests.passes++;
 				}
+				//if test failed then which step failed?
 				else{
 					for(y=0;y<d2.data[0].steps.length;y++){
-						if(d2.data[0].steps[y].passing==false && d2.data[0].video){
-							tests.results[x].testResult = "<strong>Step "+(Number(y)+1)+" failed:</strong><a href='"+d2.data[0].video.url+"'>Video recording of test</a><br>"+d2.data[0].steps[y].notes;
+						if(d2.data[0].steps[y].passing==false){
+							tests.results[x].testResult="<strong>Step "+(Number(y)+1)+"/"+d2.data[0].steps.length+" failed:</strong><br>"+d2.data[0].steps[y].notes;
 							tests.fails++;
 						}
-						else if(d2.data[0].steps[y].passing==false){
-							tests.results[x].testResult = "<strong>Step "+(Number(y)+1)+" failed:</strong><span>No video recording of test available</span><br>"+d2.data[0].steps[y].notes;
-							tests.fails++;
-						}
-						
 					}
 				}
+				//if test has video then display
+				if(d2.data[0].video){
+					tests.results[x].video="<figure><video controls src="+d2.data[0].video.url+"></video><figcaption>Video recording of test</figcaption></figure>";
+				}
+				//for each step
 				for(y=0;y<d2.data[0].steps.length;y++){
 					tests.results[x].steps[y]=[];
-					tests.results[x].steps[y].notes="<strong class='"+d2.data[0].steps[y].passing+"'>Step "+(y+1)+":</strong><br>"+d2.data[0].steps[y].notes;
+					tests.results[x].steps[y].notes="<strong class='"+d2.data[0].steps[y].passing+"'>Step "+(y+1)+":</strong>"+d2.data[0].steps[y].notes+"<br>";
+					if(d2.data[0].steps[y].error!=undefined){
+						tests.results[x].steps[y].notes+="<span class=error align=center>"+d2.data[0].steps[y].error+"</span>";
+					}
+					if(d2.data[0].steps[y].target!=""){
+						tests.results[x].steps[y].notes+="<span class=target>"+d2.data[0].steps[y].target+"</span>";
+					}
 				}
 				tests.results[x].class2=d2.data[0].screenshotComparePassing;
 				if(d2.data[0].screenshotComparePassing==true){
 					tests.results[x].screenshotResult="Screenshot Passed";
+					tests.results[x].screenshots="<figure><figcaption>Screenshot</figcaption><img src="+d2.data[0].screenshot.original.defaultUrl+"></figure>";
 					tests.screenshotpasses++;
 				}
 				else if(d2.data[0].screenshotComparePassing==null){
@@ -62,7 +71,8 @@ https.get('https://api.ghostinspector.com/v1/suites/562f9ad8175db89e368f0233/tes
 					tests.screenshotnulls++;
 				}
 				else{
-					tests.results[x].screenshotResult = "Screenshot is "+Math.round(Number(d2.data[0].screenshotCompareDifference)*100)+"% different to baseline<br><a href='"+d2.data[0].screenshot.original.defaultUrl+"'>Screenshot</a><a href='"+d2.data[0].screenshotCompare.compareOriginal.defaultUrl+"'>Comparison</a>";
+					tests.results[x].screenshotResult = "Screenshot is "+Math.round(Number(d2.data[0].screenshotCompareDifference)*100)+"% different from last";
+					tests.results[x].screenshots="<figure><figcaption>Screenshot</figcaption><img src="+d2.data[0].screenshot.original.defaultUrl+"></figure><figure><figcaption>Comparison to last</figcaption><img src="+d2.data[0].screenshotCompare.compareOriginal.defaultUrl+"></figure>";
 					tests.screenshotfails++;
 				}
 				
@@ -100,11 +110,10 @@ https.get('https://api.ghostinspector.com/v1/suites/562f9ad8175db89e368f0233/tes
 							tests.totalfails++;
 						}
 					}
-					tests.count=tests.passes+tests.fails;
-					tests.totalpasses=tests.count-tests.totalfails;
+					tests.totalpasses=d.data.length-tests.totalfails;
 					//pie charts
-					tp = tests.totalpasses/tests.count;
-					tf = tests.totalfails/tests.count;
+					tp = tests.totalpasses/d.data.length;
+					tf = tests.totalfails/d.data.length;
 					
 					x1=50+50*Math.sin(2*Math.PI*tp);
 					y1=50-50*Math.cos(2*Math.PI*tp);

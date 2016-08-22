@@ -4,10 +4,11 @@
 		font-size: 24;
 		width: 100%;
 	}
-	tr:nth-of-type(1){
+	#header{
 		font-weight: bold;
 	}
-	span{
+	#header span{
+		font-weight: bold;
 		float: right;
 		padding: 0 10;
 	}
@@ -25,17 +26,15 @@
 		width: 98%;
 		margin: 1%;
 	}
-	tr:first-child svg{
+	#header svg{
 		height: 100px;
 		width: 100px;
 		float: right;
 		font-size: 20;
 	}
-	tr:first-child {
-		vertical-align: top;
-	}
 	td{
 		width: 33%;
+		vertical-align: top;
 	}
 	.truetrue,.truenull{
 		background-color: lightgreen;
@@ -57,9 +56,6 @@
 	a{
 		color: blue;
 	}
-	tr:first-child span, td:nth-of-type(2) a, td:nth-of-type(3) > a:nth-of-type(2){
-		float: right;
-	}
 	div{
 		max-height: 0;
 		overflow: hidden;
@@ -67,6 +63,38 @@
 	}
 	details{
 		background: white;
+	}
+	details summary::-webkit-details-marker{
+		display: none;
+	}
+	.error{
+		display: block;
+		background-color: pink;
+		color: red;
+	}
+	.error:before, .error:after{
+		content:"\26A0";
+	}
+	.target{
+		font-size: 14;
+	}
+	span.target:before{
+		content: "\29BB";
+		color: red;
+		transform: rotate(45deg);
+		display: inline-block;
+	}
+	video{
+		width: 100%
+	}
+	td:nth-child(3) figure{
+		width: 50%;
+		margin: 0;
+		display: inline-block;
+	}
+	img{
+		width: 100%;
+		vertical-align: top;
 	}
 	</style>
 </head>
@@ -77,10 +105,10 @@
 		Suite last ran at: {{earliest}}
 	</h1>
 	<table border cellspacing=0 cellpadding=0>
-		<tr>
+		<tr id=header>
 			<td>
 				Test Name
-				<svg>
+				<svg id=pie>
 					<path stroke="none" fill="green" d="{{pietp}}" />
 					<path stroke="none" fill="red" d="{{pietf}}" />
 					<circle cx=50 cy=50 r=25 fill=white />
@@ -102,43 +130,59 @@
 		</tr>
 		{{#each results}}
 		<tr>
-			<td class="{{class}}{{class2}}">
+			<td class="{{class}}{{class2}}" colspan=3>
 				<details>
 					<summary class="{{class}}{{class2}}">
-						<strong>{{name}}</strong><br>
-						{{details}}
+						<table border cellpadding=0 cellspacing=0>
+							<tr>
+								<td>
+									<strong>{{name}}</strong><br>
+									{{details}}
+								</td>
+								<td class="{{class}}">
+									{{{testResult}}}
+								</td>
+								<td class="{{class2}}">
+									{{{screenshotResult}}}
+								</td>
+							</tr>
+						</table>
 					</summary>
-						<svg viewbox="0 0 500 100" preserveAspectRatio="none">
-							<defs>
-								<marker id="marker" overflow="visible">
-									<circle r="2" cx="0" cy="0" fill="black"></circle>
-								</marker>
-							</defs>
-							<rect width="50" height="100%" class="{{history.9.result}}"></rect>
-							<rect width="50" height="100%" class="{{history.8.result}}" x=50></rect>
-							<rect width="50" height="100%" class="{{history.7.result}}" x=100></rect>
-							<rect width="50" height="100%" class="{{history.6.result}}" x=150></rect>
-							<rect width="50" height="100%" class="{{history.5.result}}" x=200></rect>
-							<rect width="50" height="100%" class="{{history.4.result}}" x=250></rect>
-							<rect width="50" height="100%" class="{{history.3.result}}" x=300></rect>
-							<rect width="50" height="100%" class="{{history.2.result}}" x=350></rect>
-							<rect width="50" height="100%" class="{{history.1.result}}" x=400></rect>
-							<rect width="50" height="100%" class="{{history.0.result}}" x=450></rect>
-							<path d="M 25 {{svgc.9.c}} L 75 {{svgc.8.c}} L 125 {{svgc.7.c}} L 175 {{svgc.6.c}} L 225 {{svgc.5.c}} L 275 {{svgc.4.c}} L 325 {{svgc.3.c}} L 375 {{svgc.2.c}} L 425 {{svgc.1.c}} L 475 {{svgc.0.c}}" fill=none stroke=black  marker-start="url(#marker)" marker-mid="url(#marker)" marker-end="url(#marker)"></path>
-						</svg>
-						Execution times of the last 10 test results.
+					<table border cellpadding=0 cellspacing=0>
+						<tr>
+							<td align=center>
+								<svg viewbox="0 0 500 100" preserveAspectRatio="none">
+									<defs>
+										<marker id="marker" overflow="visible">
+											<circle r="2" cx="0" cy="0" fill="black"></circle>
+										</marker>
+									</defs>
+									<rect width="50" height="100%" class="{{history.9.result}}"></rect>
+									<rect width="50" height="100%" class="{{history.8.result}}" x=50></rect>
+									<rect width="50" height="100%" class="{{history.7.result}}" x=100></rect>
+									<rect width="50" height="100%" class="{{history.6.result}}" x=150></rect>
+									<rect width="50" height="100%" class="{{history.5.result}}" x=200></rect>
+									<rect width="50" height="100%" class="{{history.4.result}}" x=250></rect>
+									<rect width="50" height="100%" class="{{history.3.result}}" x=300></rect>
+									<rect width="50" height="100%" class="{{history.2.result}}" x=350></rect>
+									<rect width="50" height="100%" class="{{history.1.result}}" x=400></rect>
+									<rect width="50" height="100%" class="{{history.0.result}}" x=450></rect>
+									<path d="M 25 {{svgc.9.c}} L 75 {{svgc.8.c}} L 125 {{svgc.7.c}} L 175 {{svgc.6.c}} L 225 {{svgc.5.c}} L 275 {{svgc.4.c}} L 325 {{svgc.3.c}} L 375 {{svgc.2.c}} L 425 {{svgc.1.c}} L 475 {{svgc.0.c}}" fill=none stroke=black  marker-start="url(#marker)" marker-mid="url(#marker)" marker-end="url(#marker)"></path>
+								</svg>
+								Execution times of the last 10 test results.
+							</td>
+							<td>
+								{{{video}}}
+								{{#each steps}}
+								{{{notes}}}<br>
+								{{/each}}
+							</td>
+							<td align=center>
+								{{{screenshots}}}
+							</td>
+						</tr>
+					</table>
 				</details>
-			</td>
-			<td class="{{class}}">
-				<details>
-					<summary class="{{class}}">{{{testResult}}}</summary>
-					{{#each steps}}
-					{{{notes}}}<br>
-					{{/each}}
-				</details>
-			</td>
-			<td class="{{class2}}">
-				{{{screenshotResult}}}
 			</td>
 		</tr>
 		{{/each}}
