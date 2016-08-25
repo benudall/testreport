@@ -92,7 +92,8 @@
 		display: inline-block;
 	}
 	video{
-		width: 100%
+		width: 100%;
+		border: 1px solid black;
 	}
 	td:nth-child(3) figure{
 		width: 50%;
@@ -176,10 +177,10 @@
 									<rect width="50" height="100%" class="{{history.0.result}}" x=450></rect>
 									<path d="M 25 {{svgc.9.c}} L 75 {{svgc.8.c}} L 125 {{svgc.7.c}} L 175 {{svgc.6.c}} L 225 {{svgc.5.c}} L 275 {{svgc.4.c}} L 325 {{svgc.3.c}} L 375 {{svgc.2.c}} L 425 {{svgc.1.c}} L 475 {{svgc.0.c}}" fill=none stroke=black  marker-start="url(#marker)" marker-mid="url(#marker)" marker-end="url(#marker)"></path>
 								</svg>
-								Execution times of the last 10 test results.
+								Execution times of the last 10 test results.<br>
+								{{{video}}}
 							</td>
 							<td>
-								{{{video}}}
 								{{#each steps}}
 								{{{notes}}}<br>
 								{{/each}}
