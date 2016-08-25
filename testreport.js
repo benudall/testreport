@@ -51,9 +51,11 @@ https.get('https://api.ghostinspector.com/v1/suites/562f9ad8175db89e368f0233/tes
 				//for each step
 				for(y=0;y<d2.data[0].steps.length;y++){
 					tests.results[x].steps[y]=[];
-					tests.results[x].steps[y].notes="<strong class='"+d2.data[0].steps[y].passing+"'>Step "+(y+1)+":</strong>"+d2.data[0].steps[y].notes+"<br>";
+					tests.results[x].steps[y].notes="<strong class='step "+d2.data[0].steps[y].passing+"'>Step "+(y+1)+":</strong>"+d2.data[0].steps[y].notes;
 					if(d2.data[0].steps[y].error!=undefined){
-						tests.results[x].steps[y].notes+="<span class=error align=center>"+d2.data[0].steps[y].error+"</span>";
+						tests.results[x].steps[y].notes=
+						"<strong class='step "+d2.data[0].steps[y].passing+"'>Step "+(y+1)+":<span class=error>"+d2.data[0].steps[y].error+"</span></strong>"+d2.data[0].steps[y].notes
+						;
 					}
 					if(d2.data[0].steps[y].target!=""){
 						tests.results[x].steps[y].notes+="<span class=target>"+d2.data[0].steps[y].target+"</span>";
@@ -62,7 +64,7 @@ https.get('https://api.ghostinspector.com/v1/suites/562f9ad8175db89e368f0233/tes
 				tests.results[x].class2=d2.data[0].screenshotComparePassing;
 				if(d2.data[0].screenshotComparePassing==true){
 					tests.results[x].screenshotResult="Screenshot Passed";
-					tests.results[x].screenshots="<figure><figcaption>Screenshot</figcaption><img src="+d2.data[0].screenshot.original.defaultUrl+"></figure>";
+					tests.results[x].screenshots="<figure><figcaption>Screenshot</figcaption><a href="+d2.data[0].screenshot.original.defaultUrl+"><img src="+d2.data[0].screenshot.original.defaultUrl+"></a></figure>";
 					tests.screenshotpasses++;
 				}
 				else if(d2.data[0].screenshotComparePassing==null){
@@ -72,7 +74,7 @@ https.get('https://api.ghostinspector.com/v1/suites/562f9ad8175db89e368f0233/tes
 				}
 				else{
 					tests.results[x].screenshotResult = "Screenshot is "+Math.round(Number(d2.data[0].screenshotCompareDifference)*100)+"% different from last";
-					tests.results[x].screenshots="<figure><figcaption>Screenshot</figcaption><img src="+d2.data[0].screenshot.original.defaultUrl+"></figure><figure><figcaption>Comparison to last</figcaption><img src="+d2.data[0].screenshotCompare.compareOriginal.defaultUrl+"></figure>";
+					tests.results[x].screenshots="<figure><figcaption>Screenshot</figcaption><a href="+d2.data[0].screenshot.original.defaultUrl+"><img src="+d2.data[0].screenshot.original.defaultUrl+"></a></figure><figure><figcaption>Comparison to last</figcaption><a href="+d2.data[0].screenshotCompare.compareOriginal.defaultUrl+"><img src="+d2.data[0].screenshotCompare.compareOriginal.defaultUrl+"></a></figure>";
 					tests.screenshotfails++;
 				}
 				
@@ -95,7 +97,7 @@ https.get('https://api.ghostinspector.com/v1/suites/562f9ad8175db89e368f0233/tes
 					tests.results[x].svgc[t].c=100-(100*tests.results[x].timeline[t]/tests.results[x].svgmax);
 				}
 				
-				console.log(tests.results[x].name);
+				console.log(x+1+"/"+d.data.length+" "+tests.results[x].name);
 				
 				if(x==d.data.length-1){
 					var template = fs.readFileSync('test.hbs').toString();

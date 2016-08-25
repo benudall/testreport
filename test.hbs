@@ -75,21 +75,28 @@
 		display: none;
 	}
 	.error{
-		display: block;
 		background-color: pink;
 		color: red;
+		float: right;
 	}
 	.error:before, .error:after{
 		content:"\26A0";
+		font-size: 19px;
 	}
 	.target{
 		font-size: 14;
+		display: block;
 	}
 	span.target:before{
 		content: "\29BB";
 		color: red;
 		transform: rotate(45deg);
 		display: inline-block;
+	}
+	.step{
+		display: block;
+		border-radius: 6px;
+		padding: 0px 3px;
 	}
 	video{
 		width: 100%;
@@ -182,7 +189,7 @@
 							</td>
 							<td>
 								{{#each steps}}
-								{{{notes}}}<br>
+								{{{notes}}}
 								{{/each}}
 							</td>
 							<td align=center>
